@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ping Pong Game</title>
+<style>
+  body {
+    margin: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  canvas {
+    background: #111;
+    border: 2px solid white;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gameCanvas" width="600" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+// Paddle settings
+const paddleWidth = 10;
+const paddleHeight = 80;
+
+// Player paddle
+const player = {
+  x: 10,
+  y: canvas.height / 2 - paddleHeight / 2,
+  dy: 0
+};
+
+// Computer paddle
+const computer = {
+  x: canvas.width - 20,
+  y: canvas.height / 2 - paddleHeight / 2
+};
+
+// Ball
+const ball = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  radius: 8,
+  dx: 4,
+  dy: 4
+};
+
+// Controls
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") player.dy = -5;
+  if (e.key === "ArrowDown") player.dy = 5;
+});
+
+document.addEventListener("keyup", () => {
+  player.dy = 0;
+});
+
+// Draw functions
+function drawRect(x, y, w, h) {
+  ctx.fillStyle = "white";
+  ctx.fillRect(x, y, w, h);
+}
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fillStyle = "white";
+  ctx.fill();
+  ctx.closePath();
+}
+
+// Update game
+function update() {
+  // Move player
+  player.y += player.dy;
+
+  // Prevent going outside
+  player.y = Math.max(0, Math.min(canvas.height - paddleHeight, player.y));
+
+  // Computer AI (simple follow)
+  computer.y += (ball.y - (computer.y + paddleHeight / 2)) * 0.05;
+
+  // Move ball
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // Wall collision
+  if (ball.y < 0 || ball.y > canvas.height) ball.dy *= -1;
+
+  // Paddle collision
+  if (
+    ball.x < player.x + paddleWidth &&
+    ball.y > player.y &&
+    ball.y < player.y + paddleHeight
+  ) {
+    ball.dx *= -1;
+  }
+
+  if (
+    ball.x > computer.x &&
+    ball.y > computer.y &&
+    ball.y < computer.y + paddleHeight
+  ) {
+    ball.dx *= -1;
+  }
+
+  // Reset if score
+  if (ball.x < 0 || ball.x > canvas.width) {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height / 2;
+    ball.dx *= -1;
+  }
+}
+
+// Draw everything
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawRect(player.x, player.y, paddleWidth, paddleHeight);
+  drawRect(computer.x, computer.y, paddleWidth, paddleHeight);
+  drawBall();
+}
+
+// Game loop
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+</script>
+
+</body>
+</html>
