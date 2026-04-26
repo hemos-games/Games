@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Menu</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .menu-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .menu-button {
+            display: block;
+            margin: 15px 0;
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .menu-button:hover {
+            background: #ff4757;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <h1>🎮 Game Menu</h1>
+
+        <a href="ping-pong-game.html" class="menu-button">🏓 Play Ping Pong Game</a>
+        <a href="arcade-game.html" class="menu-button">🕹️ Play Arcade Game</a>
+    </div>
+
+</body>
+</html>
